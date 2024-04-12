@@ -1,0 +1,26 @@
+name: deploy-todo-demo-api-production
+
+on:
+  pull_request:
+    types: 
+      - closed
+    branches:
+      - main
+
+jobs:
+  do-deployment:
+    # needs: run-test-cases
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Deploy newest code to production machine
+      uses: ./.github/actions/run-deploy
+      with:
+        env: prod
+        folder-name: todo-demo-api
+        branch-name: main
+        pm2-config: ecosystem.config.js    
+        env-value: ${{ secrets.PROD_ENV }}
+        host-name: ${{ secrets.DEV_HOST }}
+        ssh-key: ${{ secrets.SSH_KEY_DEV_VALUE }}
