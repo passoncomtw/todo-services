@@ -1,0 +1,25 @@
+name: deploy-todo-demo-api-production
+
+on:
+  pull_request:
+    types: 
+      - closed
+    branches:
+      - main
+
+jobs:
+  do-deployment:
+    # needs: run-test-cases
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+            node-version: 18.17.0
+      - name: Install Packages
+        run: yarn install
+      - name: build docker image
+        run: VERSION=$(npm pkg get version --workspaces=false | tr -d \") && docker build . -t passon/todo-demo-api:$VERSION --progress=plain -f deploy/todo-demo-api/Dockerfile
