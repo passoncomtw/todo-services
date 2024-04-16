@@ -21,5 +21,5 @@ jobs:
             node-version: 18.17.0
       - name: Install Packages
         run: yarn install
-      - name: build docker image
-        run: VERSION=$(npm pkg get version --workspaces=false | tr -d \") && docker build . -t passon/todo-demo-api:$VERSION --progress=plain -f deploy/todo-demo-api/Dockerfile
+      - name: build and push docker image to docker hub
+        run: sh ../../scripts/build_backend_image.sh {{ secrets.DOCKERHUB_USERNAME }} {{ secrets.DOCKERHUB_PASSWORD }} todo-demo-api
