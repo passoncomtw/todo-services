@@ -1,0 +1,25 @@
+name: deploy-todo-demo-api-production
+
+on:
+  pull_request:
+    types: 
+      - closed
+    branches:
+      - main
+
+jobs:
+  do-deployment:
+    # needs: run-test-cases
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+            node-version: 18.17.0
+      - name: Install Packages
+        run: yarn install
+      - name: build and push docker image to docker hub
+        run: sh ../../scripts/build_backend_image.sh {{ secrets.DOCKERHUB_USERNAME }} {{ secrets.DOCKERHUB_PASSWORD }} todo-demo-api
