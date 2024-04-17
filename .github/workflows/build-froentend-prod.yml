@@ -3,13 +3,13 @@ name: deploy-todo-web-production
 on:
   pull_request:
     types: 
-      - closed
+    - closed
     branches:
-      - main
+    - main
     paths:
-      - 'deploy/todo-web/*'
-      - 'packages/todo-web/**'
-      - '.github/workflows/build-froentend-prod.yml'
+    - 'deploy/todo-web/*'
+    - 'packages/todo-web/**'
+    - '.github/workflows/build-froentend-prod.yml'
 
 jobs:
   # This workflow contains multiple jobs
@@ -32,7 +32,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       # install applicaion dependencies
-      - name: Install dependencies and build web pages
+      - name: Install dependencies
         run: |
           yarn install
           yarn build:todo-web
@@ -51,6 +51,12 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
+
+      - name: build web page
+        run: |
+            yarn install
+            yarn build:todo-web
+            echo "build web page done"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
