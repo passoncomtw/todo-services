@@ -1,4 +1,4 @@
-name: deploy-todo-demo-api-production
+name: deploy-todo-web-production
 
 on:
   pull_request:
@@ -7,9 +7,9 @@ on:
     branches:
       - main
     paths:
-      - 'deploy/todo-demo-api/*'
-      - 'packages/todo-demo-api/**'
-      - '.github/workflows/build-backend-prod.yml'
+      - 'deploy/todo-web/*'
+      - 'packages/todo-web/**'
+      - '.github/workflows/build-froentend-prod.yml'
 
 jobs:
   # This workflow contains multiple jobs
@@ -32,10 +32,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       # install applicaion dependencies
-      - name: Install dependencies
+      - name: Install dependencies and build web pages
         run: |
           yarn install
-          echo "yarn install done"
+          yarn build:todo-web
       # build and test the apps     
       # - name: build
       #   run: |
@@ -68,30 +68,16 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./
-          file: deploy/todo-demo-api/Dockerfile
+          file: deploy/todo-web/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/todo-demo-api:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/todo-web:latest
         
       - name: Run the image in a container
         uses: addnab/docker-run-action@v3
         with:
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/todo-demo-api:latest
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/todo-web:latest
           run: |
             echo "runing the docker image"
             echo "Testing the nodejs  app endpoints"
             echo ${{ steps.docker_build.outputs.digest }}
-  # do-deployment:
-  #   # needs: run-test-cases
-  #   if: github.event.pull_request.merged == true
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
-  #     - name: Set up Node
-  #       uses: actions/setup-node@v1
-  #       with:
-  #           node-version: 18.17.0
-  #     - name: Install Packages
-  #       run: yarn install && ls && pwd
-  #     - name: build and push docker image to docker hub
-  #       run: sh ./scripts/build_backend_image.sh ${{ secrets.DOCKERHUB_USERNAME }} ${{ secrets.DOCKERHUB_PASSWORD }} todo-demo-api $(./node_modules/build-number-generator/bin/buildnumgen.js $(npm pkg get version --workspaces=false | tr -d \"))
+  
