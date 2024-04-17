@@ -22,4 +22,4 @@ jobs:
       - name: Install Packages
         run: yarn install && ls && pwd
       - name: build and push docker image to docker hub
-        run: sh ./scripts/build_backend_image.sh ${{ secrets.DOCKERHUB_USERNAME }} ${{ secrets.DOCKERHUB_PASSWORD }} todo-demo-api
+        run: sh ./scripts/build_backend_image.sh ${{ secrets.DOCKERHUB_USERNAME }} ${{ secrets.DOCKERHUB_PASSWORD }} todo-demo-api $(./node_modules/build-number-generator/bin/buildnumgen.js $(npm pkg get version --workspaces=false | tr -d \"))
