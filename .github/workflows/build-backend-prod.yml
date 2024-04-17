@@ -31,7 +31,7 @@ jobs:
       - name: Install dependencies
         run: |
           yarn install
-          npm ci 
+          echo "yarn install done"
       # build and test the apps     
       # - name: build
       #   run: |
