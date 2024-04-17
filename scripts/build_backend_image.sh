@@ -1,9 +1,9 @@
 #!/bin/bash
 
-VERSION=./node_modules/build-number-generator/bin/buildnumgen.js $(npm pkg get version --workspaces=false | tr -d \")
 DOCKERHUB_USERNAME=$1
 DOCKERHUB_PASSWORD=$2
 DOCKERHUB_IMAGE=$3
+VERSION=$4
 
 echo "VERSION: $VERSION"
 
