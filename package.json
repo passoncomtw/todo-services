@@ -10,6 +10,7 @@
     "start:baccarat-server": "lerna run start --stream --scope=todo-server",
     "start:scc-servers": "./node_modules/concurrently/dist/bin/concurrently.js \"yarn start:scc-state\" \"yarn start:baccarat-server\"",
     "start:todo-demo-api": "lerna run start:watch --stream --scope=todo-demo-api",
+    "test:CI:todo-demo-api": "lerna run test:CI --stream --scope=todo-demo-api",
     "start:todo-web": "lerna run start --stream --scope=todo-web",
     "build:todo-web": "lerna run build --stream --scope=todo-web"
   },

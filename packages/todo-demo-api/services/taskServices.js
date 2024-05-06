@@ -85,7 +85,6 @@ const updateTaskResult = async (taskId, body) => {
   return taskResult;
 }
 
-
 const deleteTaskResult = async (taskId, body) => {
   const taskResult = await getTaskResult(taskId);
   if (isEmpty(taskResult)) {
