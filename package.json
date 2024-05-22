@@ -7,7 +7,7 @@
   "version": "0.1.0",
   "scripts": {
     "start:scc-state": "lerna run start --stream --scope=todo-managment-center",
-    "start:baccarat-server": "lerna run start --stream --scope=todo-server",
+    "start:todo-server": "lerna run start --stream --scope=todo-server",
     "start:scc-servers": "./node_modules/concurrently/dist/bin/concurrently.js \"yarn start:scc-state\" \"yarn start:baccarat-server\"",
     "start:todo-demo-api": "lerna run start:watch --stream --scope=todo-demo-api",
     "test:CI:todo-demo-api": "lerna run test:CI --stream --scope=todo-demo-api",
