@@ -10,7 +10,7 @@ services:
     tty: true
     working_dir: /usr/src/
     ports:
-      - 8000:3000
+      - 8220:8220
     # volumes:
     #   - .:/usr/src/
     #   - /usr/src/node_modules
