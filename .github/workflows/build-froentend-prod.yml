@@ -28,7 +28,6 @@ jobs:
             yarn install
             echo "${{ secrets.TODO_API_ENV }}" > ./.env
             yarn build
-            scp -r ./build/** ${{ secrets.DEV_USER_NAME }}@${{ secrets.DEV_HOST }}:${{ secrets.TODO_WEB_TARGET }}
       - name: copy files to target server via scp
         uses: appleboy/scp-action@v0.1.3
         with:
