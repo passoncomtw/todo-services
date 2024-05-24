@@ -3,20 +3,11 @@ name: "Deployment"
 description: "Deploy newest code to the machine."
 
 inputs:
-  env:
-    description: 'environment'
-    required: true
-  pm2-config:
-    description: 'pm2 start config'
-    required: true
   folder-name:
     description: 'Project folder name'
     required: true
-  db-config:
-    description: 'db config json string'
-    required: true
-  env-value:
-    description: 'env file value'
+  module-name:
+    description: '模組名稱'
     required: true
   ssh-key:
     description: 'Ssh key for login the target machine'
@@ -27,7 +18,6 @@ inputs:
   branch-name:
     description: 'The branch you want to checkout with'
     required: true
-
 runs:
   using: "composite"
   steps:
@@ -38,13 +28,12 @@ runs:
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh
           cd ./${{ inputs.folder-name }}
-          git fetch
-          git reset --hard
-          git checkout origin/${{ inputs.branch-name }}
-          echo "${{ inputs.env-value }}" > .env
-          yarn install
-          pm2 stop ${{ inputs.pm2-config }} || echo "stop pm2 process"
-          pm2 start ${{ inputs.pm2-config }} --env ${{ inputs.env }}
+          mv pkg/${{ inputs.module-name }}/docker-compose.yaml .
+          rm -rf ./pkg
+          docker pull passon/${{ inputs.module-name }}
+          docker images -a | grep none | awk '{ print $3; }' | xargs docker rmi
+          docker-compose down || echo "stop docker compose service"
+          docker-compose up -d
         host: ${{ inputs.host-name }}
         user: root
         key: ${{ inputs.ssh-key }}

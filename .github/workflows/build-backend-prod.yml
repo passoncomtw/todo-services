@@ -46,4 +46,30 @@ jobs:
           file: ./packages/${{ env.IMAGE_NAME }}/Dockerfile
           push: true
           tags: passon/${{ env.IMAGE_NAME }}:latest
-  
+
+
+
+  do-deployment:
+    needs: build-and-deploy-todo-demo-api
+    if: github.event.pull_request.merged == true
+    runs-on: mac-mini-build
+    steps:
+    - uses: actions/checkout@v3
+    # Copy docker-compose and .env files to target server
+    - name: copy files to target server via scp
+      uses: appleboy/scp-action@v0.1.3
+      with:
+        host: ${{ secrets.DEV_HOST }}
+        username: root
+        port: 22
+        key: ${{ secrets.SSH_KEY_DEV_VALUE }}
+        source: "./packages/${{ env.IMAGE_NAME }}/docker-compose.yaml"
+        target: "~/todo/${{ env.IMAGE_NAME }}/"
+    - name: Deploy newest code to production machine
+      uses: ./.github/actions/run-deploy
+      with:
+        folder-name: todo/${{ env.IMAGE_NAME }}/
+        branch-name: main
+        module-name: ${{ env.IMAGE_NAME }}
+        host-name: ${{ secrets.DEV_HOST }}
+        ssh-key: ${{ secrets.SSH_KEY_DEV_VALUE }}
