@@ -12,45 +12,23 @@ on:
     - '.github/workflows/build-froentend-prod.yml'
 
 jobs:
-  push_to_registry:
-    name: Push Docker image to Docker Hub
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
-      # attestations: write
+  do-deployment:
+    if: github.event.pull_request.merged == true
+    runs-on: self-hosted
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v4
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Node
+        uses: actions/setup-node@v1
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
-        with:
-          images: my-docker-hub-namespace/my-docker-hub-repository
-
-      - name: Build and push Docker image
-        id: push
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: lastest
-          # tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-      
-      
-      - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@v1
-        with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
-          subject-digest: ${{ steps.push.outputs.digest }}
-          push-to-registry: true
-      
+          node-version: 18.17.0
+      - name: Install Packages
+        run: cd ./packages/todo-web/
+      - name: Install Packages
+        run: yarn install
+      - name: create env file
+        run: echo "${{ secrets.TODO_API_ENV }}" > ./.env
+      - name: build web app
+        run: yarn build
+      - name: ssh and copy file to server
+        run: scp -r ./build/** ${{ secrets.DEV_USER_NAME }}@${{ secrets.DEV_HOST }}:${{ secrets.TODO_WEB_TARGET }}
