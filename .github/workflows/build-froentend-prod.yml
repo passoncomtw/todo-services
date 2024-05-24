@@ -36,4 +36,4 @@ jobs:
           port: 22
           key: ${{ secrets.SSH_KEY_DEV_VALUE }}
           source: ./packages/todo-web/build/**
-          target: ${{ secrets.TODO_WEB_TARGET }} 
+          target: ${{ secrets.TODO_WEB_TARGET }}/ 
