@@ -56,9 +56,10 @@
     "migrate:db:uat": "cd database && NODE_ENV=uat npx sequelize-cli db:migrate && cd ..",
     "migrate:db:uat:drop": "cd database && NODE_ENV=uat npx sequelize-cli db:migrate:undo:all && cd ..",
     "seed:db": "cd database && npx sequelize-cli db:seed:all && cd ..",
-    "seed:uat:db": "cd database && NODE_ENV=uat npx sequelize-cli db:seed:all && cd ..",    
+    "seed:uat:db": "cd database && NODE_ENV=uat npx sequelize-cli db:seed:all && cd ..",
     "start:docker": "./node_modules/nodemon/bin/nodemon.js /usr/src/app/server.js",
-    "test:CI": "CI=true NODE_ENV=development ./node_modules/jest/bin/jest.js --coverage --detectOpenHandles"
+    "test": "NODE_ENV=development ./node_modules/jest/bin/jest.js --coverage --detectOpenHandles --runInBand",
+    "test:CI": "CI=true NODE_ENV=development ./node_modules/jest/bin/jest.js --coverage --detectOpenHandles --runInBand"
   },
   "devDependencies": {
     "eslint": "^7.32.0",

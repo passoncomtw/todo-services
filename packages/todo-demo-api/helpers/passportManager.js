@@ -51,10 +51,12 @@ passport.use(new JWTStrategy({
 
 //Todo: 新增 session
 passport.serializeUser((user, done) => {
+  console.log("🚀 ~ passport.serializeUser ~ user:", user)
   done(null, user);
 });
 //Todo: 移除 session
 passport.deserializeUser((user, done) => {
+  console.log("🚀 ~ passport.deserializeUser ~ user:", user)
   done(null, user);
 });
 

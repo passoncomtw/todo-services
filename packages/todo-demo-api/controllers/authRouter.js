@@ -2,10 +2,11 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const pick = require("lodash/pick");
+const isEmpty = require("lodash/isEmpty");
 
 const { responseOk, responseErrWithMsg } = require("../helpers/response");
 const { parseUserResponse, createUser } = require("../services/userServices");
-const { registeRequestSchema } = require("../helpers/schemas");
+const { registeRequestSchema, signinRequestSchema } = require("../helpers/schemas");
 
 const router = express.Router();
 
@@ -53,10 +54,19 @@ const { AUTH_SECRET } = process.env;
  * @typedef LoginResponse
  * @property {{integer}} code - response code - eg: 200
  */
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
+  try {
+    await signinRequestSchema.validate(req.body);
+  } catch(error) {
+    return responseErrWithMsg(res, error.message);
+  }
+  
   passport.authenticate("local", { session: false }, async (error, user) => {
     try {
       if (error) throw error;
+      if(isEmpty(user)) {
+        throw new Error("使用者不存在");
+      }
       // const expireIn = add(new Date(), { days: 1 }).getTime();
 
       const signInfo = pick(user, ["id", "phone"]);

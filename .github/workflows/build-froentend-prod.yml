@@ -12,78 +12,23 @@ on:
     - '.github/workflows/build-froentend-prod.yml'
 
 jobs:
-  # This workflow contains multiple jobs
-  build_test:
+  do-deployment:
     if: github.event.pull_request.merged == true
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.17.0]
-        
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    runs-on: self-hosted
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
-      - name: setup node
-        uses: actions/setup-node@master
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      # install applicaion dependencies
-      - name: Install dependencies
-        run: |
-          yarn install
-          yarn build:todo-web
-      # build and test the apps     
-      # - name: build
-      #   run: |
-      #     npm run build
-      #     npm run test
-  push_to_Docker_Hub:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-    # build docker image and push to docker hub
-    # only if the app build and test successfully
-    needs: [build_test]
-
-    steps:
-      - name: checkout repo
+      - name: Checkout
         uses: actions/checkout@v2
-
-      - name: build web page
-        run: |
-            yarn install
-            yarn build:todo-web
-            echo "build web page done"
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-    
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
+      - name: Set up Node
+        uses: actions/setup-node@v1
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-    
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: ./
-          file: deploy/todo-web/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/todo-web:latest
-        
-      - name: Run the image in a container
-        uses: addnab/docker-run-action@v3
-        with:
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/todo-web:latest
-          run: |
-            echo "runing the docker image"
-            echo "Testing the nodejs  app endpoints"
-            echo ${{ steps.docker_build.outputs.digest }}
-  
+          node-version: 18.17.0
+      - name: Install Packages
+        run: cd ./packages/todo-web/
+      - name: Install Packages
+        run: yarn install
+      - name: create env file
+        run: echo "${{ secrets.TODO_API_ENV }}" > ./.env
+      - name: build web app
+        run: yarn build
+      - name: ssh and copy file to server
+        run: scp -r ./build/** ${{ secrets.DEV_USER_NAME }}@${{ secrets.DEV_HOST }}:${{ secrets.TODO_WEB_TARGET }}
