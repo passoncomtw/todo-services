@@ -37,7 +37,3 @@ runs:
         host: ${{ inputs.host-name }}
         user: root
         key: ${{ inputs.ssh-key }}
-
-
-
-
