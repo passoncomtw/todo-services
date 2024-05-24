@@ -31,7 +31,7 @@ runs:
           mv pkg/${{ inputs.module-name }}/docker-compose.yaml .
           rm -rf ./pkg
           docker pull passon/${{ inputs.module-name }}
-          docker images -a | grep none | awk '{ print $3; }' | xargs docker rmi
+          docker images -a | grep none | awk '{ print $3; }' | xargs docker rmi | echo "remove docker image done"
           docker-compose down || echo "stop docker compose service"
           docker-compose up -d
         host: ${{ inputs.host-name }}
