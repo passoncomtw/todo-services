@@ -22,13 +22,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 18.17.0
-      - name: Install Packages
-        run: cd ./packages/todo-web/
-      - name: Install Packages
-        run: yarn install
-      - name: create env file
-        run: echo "${{ secrets.TODO_API_ENV }}" > ./.env
-      - name: build web app
-        run: yarn build
-      - name: ssh and copy file to server
-        run: scp -r ./build/** ${{ secrets.DEV_USER_NAME }}@${{ secrets.DEV_HOST }}:${{ secrets.TODO_WEB_TARGET }}
+      - name: Build And Deploy Todo Web
+        run: |
+          cd ./packages/todo-web/
+          yarn install
+          echo "${{ secrets.TODO_API_ENV }}" > ./.env
+          yarn build
+          scp -r ./build/** ${{ secrets.DEV_USER_NAME }}@${{ secrets.DEV_HOST }}:${{ secrets.TODO_WEB_TARGET }}
