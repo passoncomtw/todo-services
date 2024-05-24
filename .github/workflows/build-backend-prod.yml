@@ -24,8 +24,6 @@ jobs:
     strategy:
       matrix:
         node-version: [18.17.0]
-        
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
@@ -46,9 +44,6 @@ jobs:
           file: ./packages/${{ env.IMAGE_NAME }}/Dockerfile
           push: true
           tags: passon/${{ env.IMAGE_NAME }}:latest
-
-
-
   do-deployment:
     needs: build-and-deploy-todo-demo-api
     if: github.event.pull_request.merged == true
