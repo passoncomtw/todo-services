@@ -30,7 +30,7 @@ jobs:
       - name: unlock-keychain-db
         run: |
           security unlock-keychain -p ${{ secrets.MAC_USER_PASSWORD }} /Users/admin/Library/Keychains/login.keychain-db
-          echo "${{ secrets.TODO_API_ENV }}" > .env
+          echo "${{ secrets.TODO_API_ENV }}" > ./packages/todo-demo-api/.env
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
