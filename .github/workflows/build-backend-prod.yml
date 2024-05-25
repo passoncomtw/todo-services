@@ -42,7 +42,7 @@ jobs:
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
           context: ./packages/${{ env.IMAGE_NAME }}/
-          file: ./packages/${{ env.IMAGE_NAME }}/Dockerfile
+          file: ./deploy/${{ env.IMAGE_NAME }}/Dockerfile
           push: true
           tags: passon/${{ env.IMAGE_NAME }}:latest
   do-deployment:
@@ -59,7 +59,7 @@ jobs:
         username: root
         port: 22
         key: ${{ secrets.SSH_KEY_DEV_VALUE }}
-        source: "./packages/${{ env.IMAGE_NAME }}/docker-compose.yaml"
+        source: "./deploy/${{ env.IMAGE_NAME }}/docker-compose.yaml"
         target: "~/todo/${{ env.IMAGE_NAME }}/"
         strip_components: 3
     - name: Deploy newest code to production machine
