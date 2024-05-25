@@ -9,11 +9,8 @@ COPY ./package.json /app
 COPY ./yarn.lock /app
 
 WORKDIR /app/packages
-
 RUN yarn install
-
 EXPOSE 8220
 
 WORKDIR /app
-
 CMD ["yarn", "start:todo-demo-api"]
