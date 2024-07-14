@@ -6,14 +6,15 @@ services:
   # 定義一個叫 npm 的 service
   todo-scc-state:
     image: passon/scc-state
+    container_name: todo-scc-state
     stdin_open: true
     tty: true
     working_dir: /usr/src/
     ports:
       - 0.0.0.0:7000:7777
-    # volumes:
-    #   - .:/usr/src/
-    #   - /usr/src/node_modules
+    networks:
+      todo-service-net:
+
   postgrelsqldb:
     container_name: postgrelsqldb
     image: postgres:15.7
@@ -28,10 +29,38 @@ services:
     #      size: 134217728 # 128*2^20 bytes = 128Mb
     ports:
       - 0.0.0.0:5433:5432
+    volumes:
+      - ./dbdata:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: todos_demo
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: xup6jo3fup6
+      POSTGRES_PASSWORD: example
+    networks:
+      todo-service-net:
+  todo-demo-api-service:
+    container_name: todo-api-service
+    image: passon/todo-demo-api
+    depends_on:
+      - todo-scc-state
+      - postgrelsqldb
+    ports:
+      - 0.0.0.0:8220:8220
+    networks:
+      todo-service-net:
+
+    environment:
+      SOCKETCLUSTER_PORT: 8220
+      AUTH_SECRET: test123
+      SALT_SECRET: test456
+      DB_USERNAME: postgres
+      DB_DATABASE: todos_demo
+      DB_PASSWORD: example
+      DB_PORT: 5433
+      DB_HOST: postgrelsqldb
+      DB_DIALECT: postgres
+      # SCC_STATE_SERVER_HOST: todo-scc-state
+      # SCC_STATE_SERVER_PORT: 7000
+
 networks:
   todo-service-net:
     external: true
