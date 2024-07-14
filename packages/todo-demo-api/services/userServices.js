@@ -44,7 +44,6 @@ const parseUserResponse = (userResult) => {
 
 const createUser = async (userData) => {
   const existUser = await database.User.findOne({ where: {phone: userData.phone} });
-  console.log("🚀 ~ createUser ~ existUser:", existUser)
   if (existUser) throw new Error("使用者已存在");
 
   const userResult = await database.User.create(
