@@ -60,3 +60,21 @@ SALT_SECRET=djfljskfjlsadjflalks
   $ docker run -p 8220:8220 -d todo-demo-api
 ```
 
+# Initial DB
+
+packages/todo-demo-api/.env
+
+```
+DB_USERNAME=postgres
+DB_DATABASE=todos_demo
+DB_PASSWORD=xup6jo3fup6
+DB_PORT=5433
+DB_HOST=127.0.0.1
+DB_DIALECT=postgres
+```
+
+## 執行初始化
+
+```
+  $ cd packages/todo-demo-api/ && yarn yarn migrate:db && cd ../..
+```
