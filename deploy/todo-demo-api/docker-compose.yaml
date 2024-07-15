@@ -37,6 +37,15 @@ services:
       POSTGRES_PASSWORD: example
     networks:
       todo-service-net:
+
+  todo-web-service:
+    container_name: todo-web-service
+    image: passon/todo-web
+    networks:
+      todo-service-net:
+    ports:
+      - 0.0.0.0:8320:80
+
   todo-demo-api-service:
     container_name: todo-api-service
     image: passon/todo-demo-api
@@ -54,7 +63,7 @@ services:
       DB_USERNAME: postgres
       DB_DATABASE: todos_demo
       DB_PASSWORD: example
-      DB_PORT: 5433
+      DB_PORT: 5432
       DB_HOST: postgrelsqldb
       DB_DIALECT: postgres
       # SCC_STATE_SERVER_HOST: todo-scc-state

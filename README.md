@@ -55,9 +55,18 @@ SALT_SECRET=djfljskfjlsadjflalks
 
 ## Build And Run Container Docker Image
 
+### todo-demo-api
+
 ```
   $ docker build . -t todo-demo-api --progress=plain -f deploy/todo-demo-api/Dockerfile
   $ docker run -p 8220:8220 -d todo-demo-api
+```
+
+### todo-web
+
+```
+  $ docker build . -t passon/todo-web --progress=plain -f deploy/todo-web/Dockerfile
+  $ docker run -dp 8888:80 --name todo-web-demo passon/todo-web
 ```
 
 # Initial DB

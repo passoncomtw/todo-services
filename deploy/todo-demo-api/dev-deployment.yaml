@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kink: Deployment
+metadata:
+  name: todo-demo-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-demo-service-api
+  template:
+    metadata:
+      labels:
+        app: todo-demo
+    spec:
+      containers:
+        - name: todo-demo-service-api
