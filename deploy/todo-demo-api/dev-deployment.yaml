@@ -1,16 +1,11 @@
 apiVersion: apps/v1
-kink: Deployment
+kink: Service
 metadata:
-  name: todo-demo-service
+  name: todo-database
 spec:
-  replicas: 1
+  type: NodePort
   selector:
-    matchLabels:
-      app: todo-demo-service-api
-  template:
-    metadata:
-      labels:
-        app: todo-demo
-    spec:
-      containers:
-        - name: todo-demo-service-api
+    app: database
+  ports:
+    - port: 5432
+      nodePort: 30002

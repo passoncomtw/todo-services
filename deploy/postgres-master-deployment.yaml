@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-master
+  template:
+    metadata:
+      labels:
+        app: postgres-master
+        tier: backend
+    spec:
+      containers:
+        - name: postgres-master
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+          env:  # TODO: Use configmap/secrets
+            - name: POSTGRES_PASSWORD
+              value: "example"
+            - name: POSTGRES_DB
+              value: "todos_demo"
+            - name: POSTGRES_USER
+              value: "postgres"

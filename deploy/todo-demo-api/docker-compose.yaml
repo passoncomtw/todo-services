@@ -19,6 +19,8 @@ services:
     container_name: postgrelsqldb
     image: postgres:15.7
     restart: always
+    depends_on:
+      - todo-scc-state
     # set shared memory limit when using docker-compose
     shm_size: 128mb
     # or set shared memory limit when deploy via swarm stack
@@ -41,6 +43,8 @@ services:
   todo-web-service:
     container_name: todo-web-service
     image: passon/todo-web
+    depends_on:
+      - todo-demo-api-service
     networks:
       todo-service-net:
     ports:
@@ -50,7 +54,6 @@ services:
     container_name: todo-api-service
     image: passon/todo-demo-api
     depends_on:
-      - todo-scc-state
       - postgrelsqldb
     ports:
       - 0.0.0.0:8220:8220
@@ -66,8 +69,8 @@ services:
       DB_PORT: 5432
       DB_HOST: postgrelsqldb
       DB_DIALECT: postgres
-      # SCC_STATE_SERVER_HOST: todo-scc-state
-      # SCC_STATE_SERVER_PORT: 7000
+      SCC_STATE_SERVER_HOST: todo-scc-state
+      SCC_STATE_SERVER_PORT: 7777
 
 networks:
   todo-service-net:
