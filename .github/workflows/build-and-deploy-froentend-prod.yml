@@ -9,7 +9,7 @@ on:
     paths:
     - 'deploy/todo-web/*'
     - 'packages/todo-web/**'
-    - '.github/workflows/build-froentend-prod.yml'
+    - '.github/workflows/build-and-deploy-froentend-prod.yml'
 
 jobs:
   do-deployment:
