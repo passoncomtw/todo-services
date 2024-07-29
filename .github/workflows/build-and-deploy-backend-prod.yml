@@ -13,7 +13,7 @@ on:
     paths:
       - 'deploy/todo-demo-api/*'
       - 'packages/todo-demo-api/**'
-      - '.github/workflows/build-backend-prod.yml'      
+      - '.github/workflows/build-and-deploy-backend-prod.yml'      
 
 jobs:
   # This workflow contains multiple jobs
@@ -59,14 +59,12 @@ jobs:
         username: root
         port: 22
         key: ${{ secrets.SSH_KEY_DEV_VALUE }}
-        source: "./deploy/${{ env.IMAGE_NAME }}/docker-compose.yaml"
-        target: "~/todo/${{ env.IMAGE_NAME }}/"
+        source: "./deploy/${{ env.IMAGE_NAME }}/docker-compose-service.yaml"
+        target: "/opt/services/todo-demo-api"
         strip_components: 3
     - name: Deploy newest code to production machine
-      uses: ./.github/actions/run-deploy
+      uses: ./.github/actions/run-deploy-docker
       with:
-        folder-name: todo/${{ env.IMAGE_NAME }}/
-        branch-name: main
-        module-name: ${{ env.IMAGE_NAME }}
+        folder-path: /opt/services/todo-demo-api/
         host-name: ${{ secrets.DEV_HOST }}
         ssh-key: ${{ secrets.SSH_KEY_DEV_VALUE }}

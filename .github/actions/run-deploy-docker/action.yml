@@ -1,0 +1,27 @@
+name: "Deployment Docker"
+
+description: "Deploy docker-compose service to the machine."
+
+inputs:
+  folder-path:
+    description: 'Project folder path'
+    required: true
+  ssh-key:
+    description: 'Ssh key for login the target machine'
+    required: true
+  host-name:
+    description: 'Host domain or ip'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: docker-compose up -d
+      uses: fifsky/ssh-action@master
+      with:
+        command: |
+          cd ${{ inputs.folder-path }}
+          docker-compose down --rmi all || echo "shotdown the service success"
+          docker-compose up -d
+        host: ${{ inputs.host-name }}
+        user: root
+        key: ${{ inputs.ssh-key }}
