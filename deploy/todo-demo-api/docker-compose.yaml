@@ -44,7 +44,7 @@ services:
     container_name: todo-web-service
     image: passon/todo-web
     depends_on:
-      - todo-demo-api-service
+      - postgrelsqldb
     networks:
       todo-service-net:
     ports:
