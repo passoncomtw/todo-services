@@ -4,16 +4,16 @@ version: "3.8"
 # 定義 service 的區塊，一個 service 設定可以用來啟動多個 container
 services:
   # 定義一個叫 npm 的 service
-  # todo-scc-state:
-  #   image: passon/scc-state
-  #   container_name: todo-scc-state
-  #   stdin_open: true
-  #   tty: true
-  #   working_dir: /usr/src/
-  #   ports:
-  #     - 0.0.0.0:7000:7777
-  #   networks:
-  #     todo-service-net:
+  todo-scc-state:
+    image: passon/scc-state
+    container_name: todo-scc-state
+    stdin_open: true
+    tty: true
+    working_dir: /usr/src/
+    ports:
+      - 0.0.0.0:7000:7777
+    networks:
+      todo-service-net:
 
   postgrelsqldb:
     container_name: postgrelsqldb
@@ -22,7 +22,7 @@ services:
     depends_on:
       - todo-scc-state
     # set shared memory limit when using docker-compose
-    shm_size: 128mb
+    shm_size: 256mb
     # or set shared memory limit when deploy via swarm stack
     #volumes:
     #  - type: tmpfs
@@ -69,8 +69,8 @@ services:
       DB_PORT: 5432
       DB_HOST: postgrelsqldb
       DB_DIALECT: postgres
-      # SCC_STATE_SERVER_HOST: todo-scc-state
-      # SCC_STATE_SERVER_PORT: 7777
+      SCC_STATE_SERVER_HOST: todo-scc-state
+      SCC_STATE_SERVER_PORT: 7777
 
 networks:
   todo-service-net:
