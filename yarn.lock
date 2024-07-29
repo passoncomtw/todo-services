@@ -5977,7 +5977,7 @@ eetase@^5.0.0:
   dependencies:
     async-stream-emitter "^4.1.0"
 
-eetase@^7.0.0, eetase@^7.0.1:
+eetase@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/eetase/-/eetase-7.0.1.tgz#ddf5c5b87a9ffb1279ae88375bc223b483b752a8"
   integrity sha512-1l0eaW64Fvow/4AYUP3G+HQiZQq/LCDKAFv7t0MIoUxh6MiR/Amq9kc3ZksFtN2MjThsl3KXhawwz2Hh78On1Q==
