@@ -1,22 +1,16 @@
-name: "Deployment"
+name: "Deployment froend website"
 
-description: "Deploy newest code to the machine."
+description: "Deploy React app to the machine."
 
 inputs:
-  folder-name:
-    description: 'Project folder name'
-    required: true
-  module-name:
-    description: '模組名稱'
+  folder-path:
+    description: 'Project folder path'
     required: true
   ssh-key:
     description: 'Ssh key for login the target machine'
     required: true
   host-name:
     description: 'Host domain or ip'
-    required: true
-  branch-name:
-    description: 'The branch you want to checkout with'
     required: true
 runs:
   using: "composite"
@@ -25,15 +19,8 @@ runs:
       uses: fifsky/ssh-action@master
       with:
         command: |
-          export NVM_DIR=~/.nvm
-          source ~/.nvm/nvm.sh
-          cd ./${{ inputs.folder-name }}
-          mv pkg/${{ inputs.module-name }}/docker-compose.yaml .
-          rm -rf ./pkg
-          docker pull passon/${{ inputs.module-name }}
-          docker images -a | grep none | awk '{ print $3; }' | xargs docker rmi | echo "remove docker image done"
-          docker-compose down || echo "stop docker compose service"
-          docker-compose up -d
+          cd ${{ folder-path }}
+          touch test
         host: ${{ inputs.host-name }}
         user: root
         key: ${{ inputs.ssh-key }}
