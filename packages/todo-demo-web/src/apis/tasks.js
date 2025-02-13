@@ -1,4 +1,4 @@
-import server from "./";
+import server from ".";
 
 export const getTasksResult = async (params, headers) => {
     const { data: response } = await server.get('/tasks', {params, headers});
