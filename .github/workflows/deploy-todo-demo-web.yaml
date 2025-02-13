@@ -1,18 +1,14 @@
 name: deploy-todo-demo-web-production
 
 on:
-  push:
+  pull_request:
+    types: 
+      - closed
     branches:
-      - develop
-# on:
-#   pull_request:
-#     types: 
-#       - closed
-#     branches:
-#       - main
-#     paths:
-#       - 'apps/todo-demo-web/**'
-#       - '.github/workflows/deploy-todo-demo-web.yaml'
+      - main
+    paths:
+      - 'apps/todo-demo-web/**'
+      - '.github/workflows/deploy-todo-demo-web.yaml'
 
 jobs:
   do-deployment:
