@@ -1,19 +1,14 @@
 name: deploy-todo-demo-api-production
 
 on:
-  push:
+  pull_request:
+    types: 
+      - closed
     branches:
-      - develop
-
-# on:
-#   pull_request:
-#     types: 
-#       - closed
-#     branches:
-#       - main
-#     paths:
-#       - 'apps/todo-demo-api/**'
-#       - '.github/workflows/deploy-todo-demo-api.yaml'
+      - main
+    paths:
+      - 'apps/todo-demo-api/**'
+      - '.github/workflows/deploy-todo-demo-api.yaml'
 
 env:
   REGISTRY: ghcr.io
