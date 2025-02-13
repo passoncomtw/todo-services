@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "apps/*"
   ],
   "version": "0.1.0",
   "scripts": {
