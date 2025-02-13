@@ -27,6 +27,7 @@ jobs:
           node-version: 18.17
       - name: Install Packages
         run: |
+          pwd
           cd ./apps/todo-demo-web/
           yarn install
           echo "${{ secrets.TODO_WEB_ENV }}" > ./.env
