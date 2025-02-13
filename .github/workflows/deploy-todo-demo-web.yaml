@@ -1,18 +1,22 @@
 name: deploy-todo-demo-web-production
 
 on:
-  pull_request:
-    types: 
-      - closed
+  push:
     branches:
-      - main
-    paths:
-      - 'apps/todo-demo-web/**'
-      - '.github/workflows/deploy-todo-demo-web.yaml'
+      - develop
+# on:
+#   pull_request:
+#     types: 
+#       - closed
+#     branches:
+#       - main
+#     paths:
+#       - 'apps/todo-demo-web/**'
+#       - '.github/workflows/deploy-todo-demo-web.yaml'
 
 jobs:
   do-deployment:
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: mac-mini-build
     steps:
       - name: Checkout
